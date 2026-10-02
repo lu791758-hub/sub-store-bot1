@@ -1,0 +1,26 @@
+{
+  "name": "substorebot-proxy-utils",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Self-hosted Sub-Store proxy-utils builder for substorebot",
+  "scripts": {
+    "sync": "node sync-proxy-utils.js",
+    "build": "node build-proxy-utils.js",
+    "rebuild": "npm run sync && npm run build"
+  },
+  "dependencies": {
+    "esbuild": "^0.27.3",
+    "@rollup/plugin-commonjs": "^25.0.8",
+    "@rollup/plugin-json": "^6.1.0",
+    "@rollup/plugin-node-resolve": "^15.3.1",
+    "ip-address": "^10.1.0",
+    "js-base64": "^3.7.8",
+    "json5": "^2.2.3",
+    "jsrsasign": "11.1.1",
+    "jszip": "^3.10.1",
+    "lodash": "^4.17.23",
+    "peggy": "^2.0.1",
+    "rollup": "^4.30.0",
+    "yaml": "^2.8.2"
+  }
+}

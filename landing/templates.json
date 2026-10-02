@@ -1,0 +1,14 @@
+[
+  {
+    "file": "noom.ini",
+    "name": "NooM 规则集"
+  },
+  {
+    "file": "测试Linsar-Egern.yaml",
+    "name": "测试egern"
+  },
+  {
+    "file": "ecommerce-privatedns.yaml",
+    "name": "电商私有DNS"
+  }
+]

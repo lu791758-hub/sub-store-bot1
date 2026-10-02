@@ -1,0 +1,848 @@
+ipv6: false
+allow_external_connections: true
+vif_only: false
+block_quic: false
+geoip_db_url: https://github.com/P3TERX/GeoLite.mmdb/releases/latest/download/GeoLite2-City.mmdb
+asn_db_url: https://github.com/P3TERX/GeoLite.mmdb/releases/latest/download/GeoLite2-ASN.mmdb
+proxy_latency_test_url: http://connectivitycheck.gstatic.com/generate_204
+direct_latency_test_url: http://wifi.vivo.com.cn/generate_204
+udp_latency_test_url: www.apple.com@64.6.64.6
+compat_route: true
+include_all_networks: true
+include_apns: true
+include_cellular_services: true
+include_local_networks: true
+vif_included_routes:
+- 10.6.0.1
+- 10.7.0.1
+dns:
+  bootstrap:
+  - 1.1.1.1
+  - 8.8.8.8
+  - 223.5.5.5
+  - 119.29.29.29
+  - 180.184.1.1
+  upstreams:
+    国内直连:
+    - 211.136.28.231
+    - 211.139.136.68
+    - 211.138.180.2
+    - 211.136.17.107
+    - 119.29.29.29
+    - 180.184.1.1
+    - 223.5.5.5
+    - https://223.5.5.5/dns-query
+    - https://223.6.6.6/dns-query
+    - https://doh.pub/dns-query
+    上网冲浪:
+    - h3://dns11.quad9.net/dns-query
+    - h3://dns.quad9.net/dns-query
+    - https://9.9.9.9/dns-query
+    - https://1.1.1.1/dns-query
+    - https://8.8.8.8/dns-query
+    广告杀手:
+    - https://adguard-dns.io/dns-query
+    - https://dns.adguard.com/dns-query
+  forward:
+  - domain_regex:
+      match: ocsp\.apple\.com|ocsp2\.apple\.com|crl\.apple\.com|certs\.apple\.com|valid\.apple\.com|appattest\.apple\.com|app-site-association\.cdn-apple\.com|ppq\.apple\.com|analytics\.apple\.com|digicert\.(com|cn)|sectigo\.com|verisign\.com|entrust\.net|usertrust\.com|ppq-ext\.v\.aaplimg\.com
+      value: reject
+      disabled: false
+  - domain_regex:
+      match: captive\.apple\.com|3gppnetwork\.org|dav\.orange\.fr|vvm\.mobistar\.be|vvm\.mstore\.msg\.t-mobile\.com|tma\.vvm\.mone\.pan-net\.eu|vvm\.ee\.co\.uk
+      value: system
+      disabled: false
+  - proxy_rule_set:
+      match: https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/BanAD.list
+      value: 广告杀手
+      update_interval: 43200
+      disabled: false
+  - proxy_rule_set:
+      match: https://raw.githubusercontent.com/Repcz/Tool/X/Egern/Rules/Ads_AWAvenue.yaml
+      value: 广告杀手
+      update_interval: 43200
+      disabled: false
+  - proxy_rule_set:
+      match: https://github.com/Repcz/Tool/raw/X/Egern/Rules/Reject.yaml
+      value: 广告杀手
+      update_interval: 43200
+      disabled: false
+  - proxy_rule_set:
+      match: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/Privacy/Privacy.list
+      value: 广告杀手
+      update_interval: 43200
+      disabled: false
+  - proxy_rule_set:
+      match: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/Advertising/Advertising.list
+      value: 广告杀手
+      update_interval: 43200
+      disabled: false
+  - domain_regex:
+      match: ^dl\.(l\.)?google\.com$|^update\.googleapis\.com$|\.dl\.playstation\.net$
+      value: 国内直连
+  - proxy_rule_set:
+      match: https://yfamilys.com/rule/Telegram.list
+      value: 上网冲浪
+      update_interval: 43200
+      disabled: false
+  - proxy_rule_set:
+      match: https://yfamilys.com/rule/YouTube.list
+      value: 上网冲浪
+      update_interval: 43200
+      disabled: false
+  - proxy_rule_set:
+      match: https://yfamilys.com/rule/Google.list
+      value: 上网冲浪
+      update_interval: 43200
+      disabled: false
+  - proxy_rule_set:
+      match: https://yfamilys.com/rule/Cloudflare.list
+      value: 上网冲浪
+      update_interval: 43200
+      disabled: false
+  - proxy_rule_set:
+      match: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/OpenAI/OpenAI.list
+      value: 上网冲浪
+      update_interval: 43200
+      disabled: false
+  - proxy_rule_set:
+      match: https://raw.githubusercontent.com/IBL3ND/rule/refs/heads/main/Gemini.list
+      value: 上网冲浪
+      update_interval: 43200
+      disabled: false
+  - proxy_rule_set:
+      match: https://raw.githubusercontent.com/ConnersHua/RuleGo/master/Surge/Ruleset/Extra/AI.list
+      value: 上网冲浪
+      update_interval: 43200
+      disabled: false
+  - proxy_rule_set:
+      match: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Surge/ChinaMax/ChinaMax_All.list
+      value: 国内直连
+      update_interval: 43200
+      disabled: false
+  - domain_wildcard:
+      match: '*.cn'
+      value: 国内直连
+      disabled: false
+  - domain_wildcard:
+      match: '*'
+      value: 上网冲浪
+      disabled: false
+  hosts:
+    91.108.56.*:
+    - 91.108.56.135
+    - 91.108.56.147
+    - 91.108.56.130
+    - 91.108.56.131
+    - 91.108.56.132
+    - 91.108.56.133
+    - 91.108.56.134
+  proxy_nameservers:
+  - 223.5.5.5
+  - 119.29.29.29
+  block_ips:
+  - 198.18.0.0/16
+  - 95.161.76.100/31
+  - 127.0.0.1
+  - 0.0.0.0
+  - 61.160.148.90
+  - 182.43.124.6
+  - 124.236.16.201
+  - 39.102.194.95
+  - 106.74.25.198
+  - 36.135.17.248
+  - 36.135.82.110
+  - 39.105.1.17
+  - 39.130.181.72
+  - 39.130.181.73
+  - 39.173.74.185
+  - 47.92.198.202
+  - 111.22.226.1
+  - 111.28.0.32
+  - 111.31.192.110
+  - 111.44.246.131
+  - 111.56.127.216
+  - 111.63.132.170
+  - 112.15.232.43
+  - 112.17.14.211
+  - 112.54.50.50
+  - 117.156.25.11
+  - 117.187.6.14
+  - 117.187.10.42
+  - 120.202.17.103
+  - 120.204.204.201
+  - 120.209.204.204
+  - 120.222.19.204
+  - 121.4.135.105
+  - 183.203.36.19
+  - 183.203.36.36
+  - 183.207.72.18
+  - 183.213.92.2
+  - 183.220.145.129
+  - 183.252.183.9
+  - 211.137.54.227
+  - 211.137.117.149
+  - 211.137.133.69
+  - 211.138.218.190
+  - 211.139.25.61
+  - 211.139.145.129
+  - 218.201.25.129
+  - 218.201.25.130
+  - 218.203.122.98
+  - 221.130.39.3
+  - 221.180.160.221
+  public_ip_lookup_url: https://ifconfig.me/ip
+proxies:
+ 
+policy_groups:
+- external:
+    name: ✈️ 我的节点
+    type: select
+    urls:
+    - https://sub.store/download/DjiURL
+    icon: https://raw.githubusercontent.com/baiitang/Sakura/main/Fileball/Toun/Fwicon/icon/Gugu.png
+    hidden: false
+- select:
+    name: 🍜 免流计划
+    policies:
+    flatten: true
+    filter: (?i)(北京|上海|广州|深圳|杭州|成都|重庆|武汉|南京|天津|苏州|西安|长沙|郑州|青岛|大连|厦门|昆明|合肥|福州|济南|南宁|贵阳|太原|南昌|石家庄|哈尔滨|长春|沈阳|兰州|银川|西宁|乌鲁木齐|呼和浩特|拉萨|海口|三亚|珠海|东莞|佛山|无锡|常州|徐州|温州|宁波|泉州|漳州|汕头|中山|惠州|保定|唐山|秦皇岛|廊坊|邯郸|张家口|承德|沧州|衡水|吉林|延边|齐齐哈尔|牡丹江|佳木斯|大庆|鞍山|抚顺|本溪|丹东|锦州|营口|盘锦|葫芦岛|通化|白山|松原|白城|香港|台湾|澳门|台北|高雄|台中|台南|新北|桃園|桃園|九龙|新界|CN|China|中国|大陆|国内|移动|联通|电信|广电|直连|免流|死| CMCC|CUCC|CTCC)
+    block_quic: false
+    icon: https://iili.io/Kb9Iauj.png
+    hidden: false
+- select:
+    name: 📟 智能助理
+    policies:
+    - ✈️ 我的节点
+    - 🇸🇬 新加坡节点
+    - 🇰🇷 韩国节点
+    - 🇯🇵 日本节点
+    - 🇺🇲 美国节点
+    - 🇨🇳 台湾节点
+    - 🇭🇰 香港节点
+    - 🤖 AI 专用节点
+    flatten: false
+    filter: GPT|ai
+    block_quic: false
+    icon: https://raw.githubusercontent.com/baiitang/Sakura/main/Fileball/Toun/Fwicon/icon/Pilipili.png
+    hidden: false
+- select:
+    name: 📲 电报信息
+    policies:
+    - ✈️ 我的节点
+    - 🤖 AI 专用节点
+    - 🧬 自动选择
+    - DC1 🌎
+    - DC2 🌍
+    - DC4 🌍
+    - DC5 🌏
+    flatten: false
+    icon: https://raw.githubusercontent.com/Grindoo/icon/refs/heads/main/emby/jms.png
+    hidden: false
+- select:
+    name: 🎵 Spotify
+    policies:
+    - 🇭🇰 香港节点
+    - 🇨🇳 台湾节点
+    - 🇯🇵 日本节点
+    - 🇰🇷 韩国节点
+    - 🇸🇬 新加坡节点
+    - 🇺🇲 美国节点
+    - 🌏 东南亚节点
+    - 🇪🇺 欧盟节点
+    flatten: false
+    filter: (?i)(🇺🇸|🇭🇰|🇯🇵|🇰🇷|🇸🇬|🇹🇼|🇻🇳|🇹🇭|🇮🇩|🇲🇾|🇵🇭|🇩🇪|🇫🇷|🇳🇱|🇧🇪|🇦🇹|🇮🇪|🇱🇺|🇸🇪|🇩🇰|🇫🇮|🇪🇪|🇱🇻|🇱🇹|🇮🇹|🇪🇸|🇵🇹|🇬🇷|🇲🇹|🇨🇾|🇷🇴|🇵🇱|🇭🇺|🇧🇬|🇸🇰|🇭🇷|美国|香港|日本|韩国|新加坡|台湾|越南|泰国|印尼|马来西亚|菲律宾|德国|法国|荷兰|比利时|奥地利|爱尔兰|卢森堡|瑞典|丹麦|芬兰|爱沙尼亚|拉脱维亚|立陶宛|意大利|西班牙|葡萄牙|希腊|马耳他|塞浦路斯|罗马尼亚|波兰|匈牙利|保加利亚|斯洛伐克|克罗地亚|US|HK|JP|KR|SG|TW|VN|TH|ID|MY|PH|DE|FR|NL|BE|AT|IE|LU|SE|DK|FI|EE|LV|LT|IT|ES|PT|GR|MT|CY|RO|PL|HU|BG|SK|HR) us|USA|美国
+    icon: https://raw.githubusercontent.com/baiitang/Sakura/main/Fileball/Toun/Fwicon/icon/Misty.png
+    hidden: false
+- select:
+    name: 🍿 国外媒体
+    policies:
+    - 🧬 自动选择
+    - 🤖 AI 专用节点
+    - 🌏 东南亚节点
+    - 🇪🇺 欧盟节点
+    flatten: false
+    icon: https://raw.githubusercontent.com/baiitang/Sakura/main/Fileball/Toun/Fwicon/icon/Fhlemby.png
+    hidden: false
+- select:
+    name: 📽 微软苹果
+    policies:
+    - DIRECT
+    - 🇭🇰 香港节点
+    - 🇺🇲 美国节点
+    - 🇯🇵 日本节点
+    - 🇰🇷 韩国节点
+    - 🌏 东南亚节点
+    - 🇪🇺 欧盟节点
+    - ✈️ 我的节点
+    flatten: false
+    icon: https://raw.githubusercontent.com/ginibond/ginibond/main/Icons/Forward/Tanhua_cq.png
+    hidden: false
+- select:
+    name: 🌏 东南亚节点
+    policies:
+    - 🇸🇬 新加坡节点
+    - 🇲🇾 马来西亚节点
+    - 🇹🇭 泰国节点
+    - 🇮🇩 印尼节点
+    - 🇵🇭 菲律宾节点
+    - 🇻🇳 越南节点
+    flatten: false
+    filter: (?i)(🇸🇬|🇲🇾|🇹🇭|🇮🇩|🇵🇭|🇻🇳|新加坡|马来西亚|泰国|印尼|菲律宾|越南|Singapore|Malaysia|Thailand|Indonesia|Philippines|Vietnam|SG|MY|TH|ID|PH|VN)
+    icon: https://raw.githubusercontent.com/ginibond/ginibond/main/Icons/Forward/Dc.png
+    hidden: false
+- select:
+    name: 🇪🇺 欧盟节点
+    policies:
+    - 🇪🇺 西欧节点
+    - 🇪🇺 北欧节点
+    - 🇪🇺 南欧节点
+    - 🇪🇺 东欧节点
+    flatten: false
+    filter: (?i)(🇪🇺|🇩🇪|🇫🇷|🇮🇹|🇪🇸|🇳🇱|🇵🇱|🇸🇪|🇧🇪|🇦🇹|🇮🇪|🇩🇰|🇫🇮|🇨🇿|🇷🇴|🇵🇹|🇬🇷|🇭🇺|🇧🇬|🇸🇰|🇱🇹|🇱🇻|🇭🇷|🇪🇪|🇱🇺|🇲🇹|🇨🇾|欧盟|德国|法国|意大利|西班牙|荷兰|波兰|瑞典|比利时|奥地利|爱尔兰|丹麦|芬兰|捷克|罗马尼亚|葡萄牙|希腊|匈牙利|保加利亚|斯洛伐克|立陶宛|拉脱维亚|克罗地亚|爱沙尼亚|卢森堡|马耳他|塞浦路斯|Germany|France|Italy|Spain|Netherlands|Poland|Sweden|Belgium|Austria|Ireland|Denmark|Finland|Czech|Romania|Portugal|Greece|Hungary|Bulgaria|Slovakia|Lithuania|Latvia|Croatia|Estonia|Luxembourg|Malta|Cyprus|DE|FR|IT|ES|NL|PL|SE|BE|AT|IE|DK|FI|CZ|RO|PT|GR|HU|BG|SK|LT|LV|HR|EE|LU|MT|CY)
+    icon: https://raw.githubusercontent.com/Grindoo/icon/refs/heads/main/emby/shufu.PNG
+    hidden: false
+- external:
+    name: 🛩️ 回国节点
+    type: smart
+    urls:
+    icon: https://raw.githubusercontent.com/chxm1023/Script_X/main/icon/yanhua1.png
+    hidden: true
+- external:
+    name: 🤖 AI 专用节点
+    type: smart
+    urls:
+    filter: (?i)(Grok|GPT|ChatGPT|OpenAI|AI|支持GPT|ChatGPT可用)
+    icon: https://raw.githubusercontent.com/chxm1023/Script_X/main/icon/ChatGPT/ChatGPT6.png
+    hidden: true
+- external:
+    name: 🧬 自动选择
+    type: smart
+    urls:
+    icon: https://raw.githubusercontent.com/arthur97172/Rule_script/main/Iconset/Auto.png
+    hidden: true
+- smart:
+    name: 🇭🇰 香港节点
+    policies:
+    - ✈️ 我的节点
+    flatten: true
+    filter: (?i)(🇭🇰|香港|港|HK|Hong Kong)
+    icon: https://www.imgccc.com/2026/02/24/2f1cb9b8ed904.png
+    hidden: true
+- smart:
+    name: 🇨🇳 台湾节点
+    policies:
+    - ✈️ 我的节点
+    flatten: true
+    filter: (?i)(🇹🇼|台湾|台|TW|Tai)
+    icon: https://www.imgccc.com/2026/02/24/86ab5c7d47ce9.png
+    hidden: true
+- smart:
+    name: 🇺🇲 美国节点
+    policies:
+    - ✈️ 我的节点
+    flatten: true
+    filter: (?i)(🇺🇸|美国|美|States|US)
+    icon: https://www.imgccc.com/2026/02/24/4ab5a778826c8.png
+    hidden: true
+- smart:
+    name: 🇯🇵 日本节点
+    policies:
+    - ✈️ 我的节点
+    flatten: true
+    filter: (?i)(🇯🇵|日|日本|Japan|JP)
+    icon: https://www.imgccc.com/2026/02/24/a3af212d0bd4c.png
+    hidden: true
+- smart:
+    name: 🇰🇷 韩国节点
+    policies:
+    - ✈️ 我的节点
+    flatten: true
+    filter: (?i)(🇰🇷|韩国|韩|KR|Korea)
+    icon: https://www.imgccc.com/2026/02/24/49658cd77be00.png
+    hidden: true
+- smart:
+    name: DC1 🌎
+    policies:
+    - ✈️ 我的节点
+    flatten: true
+    filter: (?i)🇺🇸|🇨🇦|🇲🇽|🇧🇷|🇦🇷|🇨🇱|🇨🇴|🇵🇪|🇻🇪|🇪🇨|🇺🇾|🇵🇾|🇧🇴|🇬🇹|🇭🇳|🇸🇻|🇳🇮|🇨🇷|🇵🇦|🇨🇺|🇩🇴|🇭🇹|🇯🇲|🇹🇹|🇧🇸|🇧🇧|美国|加拿大|墨西哥|巴西|阿根廷|智利|哥伦比亚|秘鲁|委内瑞拉|厄瓜多尔|乌拉圭|巴拉圭|玻利维亚|危地马拉|洪都拉斯|萨尔瓦多|尼加拉瓜|哥斯达黎加|巴拿马|古巴|多米尼加|海地|牙买加|特立尼达|US|USA|Canada|CA|MX|Brazil|BR|Argentina|AR|Chile|CL|Colombia|CO|Peru|PE|Venezuela|VE|Miami|DC1|DC3
+    icon: https://raw.githubusercontent.com/Grindoo/icon/refs/heads/main/emby/nebula.png
+    hidden: true
+- smart:
+    name: DC2 🌍
+    policies:
+    - ✈️ 我的节点
+    flatten: true
+    filter: (?i)🇩🇪|🇨🇿|🇦🇹|🇵🇱|🇸🇪|🇩🇰|🇳🇴|🇫🇮|🇭🇺|🇸🇰|🇧🇪|🇨🇭|德国|捷克|奥地利|波兰|瑞典|丹麦|挪威|芬兰|匈牙利|斯洛伐克|比利时|瑞士|Germany|DE|Berlin|DC2|\+49|\+43|\+420|\+48|\+45|\+46|\+47
+    icon: https://raw.githubusercontent.com/Grindoo/icon/refs/heads/main/emby/nebula2.PNG
+    hidden: true
+- smart:
+    name: DC4 🌍
+    policies:
+    - ✈️ 我的节点
+    flatten: true
+    filter: (?i)🇳🇱|🇫🇷|🇮🇹|🇪🇸|🇬🇧|🇮🇪|🇵🇹|🇬🇷|🇷🇴|🇧🇬|🇭🇷|🇱🇹|🇱🇻|🇪🇪|🇱🇺|🇲🇹|🇨🇾|🇹🇷|🇮🇱|🇸🇦|🇦🇪|🇶🇦|🇰🇼|🇧🇭|🇴🇲|🇯🇴|🇱🇧|🇮🇶|🇮🇷|🇪🇬|🇿🇦|荷兰|法国|意大利|西班牙|英国|爱尔兰|葡萄牙|希腊|罗马尼亚|保加利亚|克罗地亚|立陶宛|拉脱维亚|爱沙尼亚|卢森堡|马耳他|塞浦路斯|土耳其|以色列|沙特|阿联酋|卡塔尔|科威特|巴林|阿曼|约旦|黎巴嫩|伊拉克|伊朗|埃及|南非|Netherlands|NL|France|FR|Italy|IT|Spain|ES|United Kingdom|UK|GB|Amsterdam|DC4|\+31|\+44|\+33|\+39|\+34|\+351
+    icon: https://raw.githubusercontent.com/Grindoo/icon/refs/heads/main/emby/nebula2.PNG
+    hidden: true
+- smart:
+    name: DC5 🌏
+    policies:
+    - ✈️ 我的节点
+    flatten: true
+    filter: (?i)🇸🇬|🇯🇵|🇰🇷|🇭🇰|🇹🇼|🇨🇳|🇲🇾|🇹🇭|🇮🇩|🇵🇭|🇻🇳|🇮🇳|🇦🇺|🇳🇿|🇵🇰|🇧🇩|🇱🇰|🇲🇲|🇰🇭|🇱🇦|🇧🇳|🇲🇻|🇳🇵|🇲🇳|🇰🇿|🇺🇿|新加坡|日本|韩国|香港|台湾|中国|马来西亚|泰国|印尼|菲律宾|越南|印度|澳大利亚|新西兰|巴基斯坦|孟加拉|斯里兰卡|缅甸|柬埔寨|老挝|文莱|尼泊尔|蒙古|哈萨克斯坦|乌兹别克斯坦|Singapore|SG|Japan|JP|Korea|KR|Hong Kong|HK|Taiwan|TW|India|IN|Australia|AU|New Zealand|NZ|Malaysia|MY|Thailand|TH|Indonesia|ID|Philippines|PH|Vietnam|VN|DC5
+    icon: https://raw.githubusercontent.com/Grindoo/icon/refs/heads/main/emby/nebula3.PNG
+    hidden: true
+- smart:
+    name: 🇪🇺 西欧节点
+    policies:
+    - ✈️ 我的节点
+    flatten: true
+    filter: (?i)(🇩🇪|🇫🇷|🇳🇱|🇧🇪|🇦🇹|🇮🇪|🇱🇺|德国|法国|荷兰|比利时|奥地利|爱尔兰|卢森堡|Germany|France|Netherlands|Belgium|Austria|Ireland|Luxembourg|DE|FR|NL|BE|AT|IE|LU)
+    icon: https://raw.githubusercontent.com/ginibond/ginibond/main/Icons/Forward/69yun.png
+    hidden: true
+- smart:
+    name: 🇪🇺 北欧节点
+    policies:
+    - ✈️ 我的节点
+    flatten: true
+    filter: (?i)(🇸🇪|🇩🇰|🇫🇮|🇪🇪|🇱🇻|🇱🇹|瑞典|丹麦|芬兰|爱沙尼亚|拉脱维亚|立陶宛|Sweden|Denmark|Finland|Estonia|Latvia|Lithuania|SE|DK|FI|EE|LV|LT)
+    icon: https://raw.githubusercontent.com/ginibond/ginibond/main/Icons/Forward/69yun1.png
+    hidden: true
+- smart:
+    name: 🇪🇺 南欧节点
+    policies:
+    - ✈️ 我的节点
+    flatten: true
+    filter: (?i)(🇮🇹|🇪🇸|🇵🇹|🇬🇷|🇲🇹|🇨🇾|意大利|西班牙|葡萄牙|希腊|马耳他|塞浦路斯|Italy|Spain|Portugal|Greece|Malta|Cyprus|IT|ES|GR|MT|CY)
+    icon: https://raw.githubusercontent.com/ginibond/ginibond/main/Icons/Forward/69yun2.png
+    hidden: true
+- smart:
+    name: 🇪🇺 东欧节点
+    policies:
+    - ✈️ 我的节点
+    flatten: true
+    filter: (?i)(🇷🇴|🇵🇱|🇭🇺|🇧🇬|🇸🇰|🇭🇷|捷克|罗马尼亚|波兰|匈牙利|保加利亚|斯洛伐克|克罗地亚|Czech|Romania|Poland|Hungary|Bulgaria|Slovakia|Croatia|CZ|RO|PL|HU|BG|SK|HR)
+    icon: https://raw.githubusercontent.com/ginibond/ginibond/main/Icons/Forward/69yun3.png
+    hidden: true
+- smart:
+    name: 🇸🇬 新加坡节点
+    policies:
+    - ✈️ 我的节点
+    flatten: true
+    filter: (?i)(🇸🇬|新加坡|SG|Singapore)
+    icon: https://iili.io/FaRfFXn.png
+    hidden: true
+- smart:
+    name: 🇲🇾 马来西亚节点
+    policies:
+    - ✈️ 我的节点
+    flatten: true
+    filter: (?i)(🇲🇾|马来西亚|MY|Malaysia)
+    icon: https://iili.io/FaA7mPV.png
+    hidden: true
+- smart:
+    name: 🇹🇭 泰国节点
+    policies:
+    - ✈️ 我的节点
+    flatten: true
+    filter: (?i)(🇹🇭|泰国|TH|Thailand)
+    icon: https://iili.io/FaA5hmb.png
+    hidden: true
+- smart:
+    name: 🇮🇩 印尼节点
+    policies:
+    - ✈️ 我的节点
+    flatten: true
+    filter: (?i)(🇮🇩|印尼|ID|Indonesia)
+    icon: https://iili.io/Kq9rghx.png
+    hidden: true
+- smart:
+    name: 🇵🇭 菲律宾节点
+    policies:
+    - ✈️ 我的节点
+    flatten: true
+    filter: (?i)(🇵🇭|菲律宾|PH|Philippines)
+    icon: https://iili.io/qT8EPKF.png
+    hidden: true
+- smart:
+    name: 🇻🇳 越南节点
+    policies:
+    - ✈️ 我的节点
+    flatten: true
+    filter: (?i)(🇻🇳|越南|VN|Vietnam)
+    icon: https://iili.io/FaTC2yP.png
+    hidden: true
+- load_balance:
+    name: 🔄 PingMe轮询池
+    policies:
+    - 🧬 自动选择
+    algorithm: round_robin
+    flatten: true
+    icon: https://raw.githubusercontent.com/chxm1023/Script_X/main/icon/stash1.png
+    hidden: true
+rules:
+- domain_suffix:
+    match: fofa.info
+    policy: ✈️ 我的节点
+    disabled: false
+- domain_suffix:
+    match: snssdk.com
+    policy: ✈️ 我的节点
+- domain_suffix:
+    match: amemv.com
+    policy: ✈️ 我的节点
+- domain_suffix:
+    match: iesdouyin.com
+    policy: ✈️ 我的节点
+- domain_suffix:
+    match: zijieapi.com
+    policy: ✈️ 我的节点
+- domain_suffix:
+    match: byteimg.com
+    policy: ✈️ 我的节点
+- domain_suffix:
+    match: bytedance.com
+    policy: ✈️ 我的节点
+- domain_suffix:
+    match: bytedance.net
+    policy: ✈️ 我的节点
+- domain_suffix:
+    match: bytedns.net
+    policy: ✈️ 我的节点
+- domain_suffix:
+    match: pstatp.com
+    policy: ✈️ 我的节点
+- domain_suffix:
+    match: douyinpic.com
+    policy: DIRECT
+    disabled: false
+- domain_suffix:
+    match: douyinvod.com
+    policy: DIRECT
+    disabled: false
+- domain_keyword:
+    match: zjcdn.com
+    policy: DIRECT
+    disabled: false
+- domain_suffix:
+    match: douyinstatic.com
+    policy: ✈️ 我的节点
+- domain_suffix:
+    match: volces.com
+    policy: ✈️ 我的节点
+- domain_suffix:
+    match: volcvideo.com
+    policy: ✈️ 我的节点
+- domain_suffix:
+    match: toutiaoimg.com
+    policy: ✈️ 我的节点
+- domain_suffix:
+    match: toutiaoimg.cn
+    policy: ✈️ 我的节点
+- domain_suffix:
+    name: 松松签库
+    match: repo.ethsign.fyi
+    policy: ✈️ 我的节点
+    disabled: false
+- domain_suffix:
+    name: donkAI
+    match: ai.growthcircle.id
+    policy: 📟 智能助理
+    disabled: false
+- domain:
+    match: api.pingmeapp.net
+    policy: 🔄 PingMe轮询池
+    disabled: false
+- domain_suffix:
+    match: pingmeapp.net
+    policy: 🔄 PingMe轮询池
+    disabled: false
+- ip_cidr:
+    name: gxminis
+    match: 115.190.172.31/32
+    policy: 📟 智能助理
+    no_resolve: false
+    disabled: false
+- domain_suffix:
+    name: 节点解析
+    match: dpdns.org
+    policy: 📲 电报信息
+    disabled: false
+- domain_suffix:
+    name: sub-CF相关
+    match: linsar.de5.net
+    policy: 📲 电报信息
+    disabled: false
+- domain_suffix:
+    name: 很好记
+    match: api.zhenhaoji.qzz.io
+    policy: 📟 智能助理
+    disabled: false
+- domain_suffix:
+    name: Linuxdo
+    match: linux.do
+    policy: 📟 智能助理
+    disabled: false
+- domain_suffix:
+    name: 短信✈️
+    match: ly.longyuezuche.top
+    policy: ✈️ 我的节点
+    disabled: false
+- rule_set:
+    name: apple直连
+    match: https://raw.githubusercontent.com/Linsars/Surge/main/list/apple-tf.list
+    policy: 📽 微软苹果
+    disabled: false
+- domain:
+    name: 屏蔽崩溃反馈
+    match: ingest.sentry.io
+    policy: REJECT-DROP
+    disabled: false
+- rule_set:
+    name: 去广告（规则集）
+    match: https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/BanAD.list
+    policy: REJECT-DROP
+    disabled: false
+- rule_set:
+    name: AWAvenue广告
+    match: https://raw.githubusercontent.com/Repcz/Tool/X/Egern/Rules/Ads_AWAvenue.yaml
+    policy: REJECT-DROP
+- rule_set:
+    name: 常用Reject
+    match: https://github.com/Repcz/Tool/raw/X/Egern/Rules/Reject.yaml
+    policy: REJECT-DROP
+- rule_set:
+    name: Advertising
+    match: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/Advertising/Advertising.list
+    policy: REJECT-DROP
+- rule_set:
+    match: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/Spotify/Spotify.list
+    policy: 🎵 Spotify
+- rule_set:
+    name: Telegram SG
+    match: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/TelegramSG/TelegramSG.list
+    policy: DC5 🌍
+    update_interval: 86400
+    disabled: true
+- rule_set:
+    name: Telegram US
+    match: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/TelegramUS/TelegramUS.list
+    policy: DC1 🌍
+    update_interval: 86400
+    disabled: true
+- rule_set:
+    name: Telegram NL
+    match: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/TelegramNL/TelegramNL.list
+    policy: DC2 🌍
+    update_interval: 86400
+    disabled: true
+- rule_set:
+    name: Telegram NL
+    match: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/TelegramNL/TelegramNL.list
+    policy: DC4 🌍
+    update_interval: 86400
+    disabled: true
+- rule_set:
+    name: Telegram
+    match: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/Telegram/Telegram.list
+    policy: 📲 电报信息
+    update_interval: 86400
+    disabled: false
+- rule_set:
+    match: https://raw.githubusercontent.com/TimKerry/Surge-Rule/refs/heads/main/Apple%20Intelligence.list
+    policy: 📟 智能助理
+- rule_set:
+    match: https://ruleset.skk.moe/List/non_ip/ai.conf
+    policy: 📟 智能助理
+- rule_set:
+    match: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/Google/Google.list
+    policy: 📟 智能助理
+- rule_set:
+    match: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/GitHub/GitHub.list
+    policy: 📟 智能助理
+- rule_set:
+    match: https://raw.githubusercontent.com/Chocolate4U/Iran-clash-rules/release/cloudflare.yaml
+    policy: 📟 智能助理
+- rule_set:
+    match: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/Microsoft/Microsoft.list
+    policy: 📽 微软苹果
+- rule_set:
+    match: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/PayPal/PayPal.list
+    policy: 🍿 国外媒体
+- rule_set:
+    match: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/Disney/Disney.list
+    policy: 🍿 国外媒体
+- rule_set:
+    match: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/Twitter/Twitter.list
+    policy: 📟 智能助理
+- rule_set:
+    match: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/YouTube/YouTube.list
+    policy: 🍿 国外媒体
+- ip_cidr:
+    match: 110.42.5.134/32
+    policy: REJECT
+    no_resolve: true
+- rule_set:
+    match: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/ChinaMax/ChinaMax.list
+    policy: DIRECT
+- rule_set:
+    name: 抖音
+    match: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/DouYin/DouYin.list
+    policy: DIRECT
+    disabled: true
+- rule_set:
+    match: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/WeChat/WeChat.list
+    policy: DIRECT
+- domain:
+    match: ifconfig.me
+    policy: DIRECT
+- domain_suffix:
+    match: cn
+    policy: DIRECT
+- geoip:
+    match: CN
+    policy: DIRECT
+    no_resolve: true
+- ip_cidr:
+    match: 192.168.0.0/16
+    policy: DIRECT
+    no_resolve: true
+- ip_cidr:
+    match: 10.0.0.0/8
+    policy: ✈️ 我的节点
+    no_resolve: true
+- ip_cidr:
+    match: 127.0.0.0/8
+    policy: DIRECT
+    no_resolve: true
+- ip_cidr:
+    match: 172.16.0.0/12
+    policy: DIRECT
+    no_resolve: true
+- ip_cidr:
+    match: 192.128.0.0/16
+    policy: DIRECT
+    no_resolve: true
+- ip_cidr:
+    match: 224.0.0.0/24
+    policy: DIRECT
+    no_resolve: true
+- default:
+    name: 兜底代理
+    policy: ✈️ 我的节点
+scriptings:
+- schedule:
+    name: pm
+    cron: 0 */3 * * *
+    script_url: https://github.com/158212892/QuantumultXMark/raw/refs/heads/main/My/Scripts/PingMe.js
+    update_interval: 8640000
+    timeout: 120
+    disabled: true
+- generic:
+    name: 背景
+    script_url: https://raw.githubusercontent.com/Linsars/Surge/main/JS/egern-bag.js
+mitm:
+  ca_p12: egern.p12
+  ca_passphrase: egern
+  hostnames:
+    includes:
+    - api.openai.com
+  hostnames_disabled:
+    includes:
+    - api.openai.com
+http_captures:
+  includes:
+  - generativelanguage.googleapis.com
+  - api.anthropic.com
+  - api.openai.com
+http_captures_disabled:
+  includes:
+  - generativelanguage.googleapis.com
+  - api.anthropic.com
+  - api.openai.com
+widgets:
+- name: CG
+  script_name: 背景
+modules:
+- url: https://raw.githubusercontent.com/3183339668/Egern/main/pingme.yaml
+  compat_arguments:
+    arg1: 'true'
+    arg2: 'false'
+    arg3: 'false'
+    arg4: 'false'
+    PROXY: 🔄 PingMe轮询池
+    arg5: 0 */3 * * *
+  enabled: false
+- url: https://raw.githubusercontent.com/sub-store-org/Sub-Store/master/config/Egern.yaml
+  compat_arguments:
+    sync: '#'
+    produce: '#'
+  enabled: true
+- url: https://yfamilys.com/module/adultraplus.sgmodule
+  enabled: true
+- url: https://raw.githubusercontent.com/Linsars/Surge/main/sg/egern-ipDCH.yaml
+  compat_arguments:
+    POLICY: ✈️ 我的节点
+  enabled: true
+- url: https://raw.githubusercontent.com/QingRex/LoonKissSurge/refs/heads/main/Surge/%E6%8B%BC%E5%A4%9A%E5%A4%9A%E5%8E%BB%E5%B9%BF%E5%91%8A.sgmodule
+  enabled: true
+- url: https://github.com/BiliUniverse/Global/releases/latest/download/BiliBili.Global.plugin
+  compat_arguments:
+    ForceHost: '2'
+    Proxies.HKG: 📲 电报信息
+    Locales: HKG
+    Proxies.CHN: 📽 微软苹果
+  enabled: true
+- url: https://github.com/NSRingo/Maps/releases/latest/download/iRingo.Maps.yaml
+  enabled: true
+- url: https://github.com/NSRingo/WeatherKit/releases/latest/download/iRingo.WeatherKit.yaml
+  enabled: true
+- url: https://raw.githubusercontent.com/ttyyss2233/Tool/main/shadowrocket/mokuai/Apns.module
+  compat_arguments:
+    PROXY: 📲 电报信息
+  enabled: true
+- url: https://raw.githubusercontent.com/Linsars/Surge/main/sg/egern-PMck.sgmodule
+  compat_arguments:
+    最大视频次数: '5'
+    PROXY: 🔄 PingMe轮询池
+  enabled: true
+- url: https://raw.githubusercontent.com/fmz200/wool_scripts/main/Surge/module/split/partZ/ChinaMobile.sgmodule
+  enabled: true
+- url: https://raw.githubusercontent.com/Linsars/Surge/main/sg/Eg-TGredirect.sgmudle
+  env:
+    CLIENT: Turrit
+  enabled: true
+- name: ScriptHub
+  url: https://raw.githubusercontent.com/Script-Hub-Org/Script-Hub/main/modules/script-hub.surge.sgmodule
+  enabled: false
+- url: https://raw.githubusercontent.com/chavyleung/scripts/master/box/rewrite/boxjs.rewrite.surge.sgmodule
+  enabled: false
+- url: https://raw.githubusercontent.com/Linsars/Surge/main/sg/glados.yaml
+  compat_arguments:
+    manualCookie: koa:sess=eyJ1c2VySWQiOjcyMTM5MCwiX2V4cGlyZSI6MTgwNjIyNzc3NTQ2NywiX21heEFnZSI6MjU5MjAwMDAwMDB9; koa:sess.sig=6NW0FsLX0U2bz9-SnknTJaHdCBE
+  enabled: false
+- name: 叮当猫plus
+  url: https://raw.githubusercontent.com/chxm1023/Script_X/main/Collections.sgmodule
+  enabled: false
+- url: https://oics.net/download/oixcloud.sgmodule
+  enabled: false
+- url: https://reven.jsforbaby.workers.dev/reven/iTunes.sgmodule
+  enabled: false
+- url: https://reven.jsforbaby.workers.dev/reven/reven.sgmodule
+  enabled: false
+- url: https://raw.githubusercontent.com/Tartarus2014/For-own-use/master/Surge/Module/FKTG.sgmodule
+  enabled: false
+- name: ForWorld1.3.13
+  url: https://mock.forward1.workers.dev/forward.sgmodule
+  enabled: false
+- name: ''
+  url: https://raw.githubusercontent.com/Maasea/sgmodule/master/YouTube.Enhance.sgmodule
+  enabled: false
+- name: Spotify
+  url: https://raw.githubusercontent.com/app2smile/rules/master/module/spotify.module
+  enabled: false
+- url: https://raw.githubusercontent.com/xream/scripts/main/surge/modules/network-info/net-lsp-x.sgmodule
+  compat_arguments:
+    PRIVACY: ipwhois
+  enabled: false

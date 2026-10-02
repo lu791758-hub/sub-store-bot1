@@ -1,0 +1,1019 @@
+# 电商私有DNS 分流模板
+# 节点来自订阅, 由 bot 自动填充
+# 私有 DNS: +.cloud-nodes.com / *.oix_nodes.com → 124.221.68.73:1053
+
+
+mixed-port: 7890
+allow-lan: false
+mode: rule
+log-level: info
+ipv6: false
+find-process-mode: strict
+
+profile:
+  store-selected: true
+  store-fake-ip: true
+
+geodata-mode: true
+geo-auto-update: true
+geo-update-interval: 24
+geox-url:
+  geoip: "https://cdn.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/geoip.dat"
+  geosite: "https://cdn.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/geosite.dat"
+  mmdb: "https://cdn.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/country.mmdb"
+
+tun:
+  enable: true
+  stack: system
+  auto-route: true
+  auto-detect-interface: true
+  dns-hijack:
+    - any:53
+    - tcp://any:53
+  route-exclude-address:
+    - 127.0.0.0/8
+    - 192.168.0.0/16
+    - 10.0.0.0/8
+    - 172.16.0.0/12
+
+dns:
+  enable: true
+  listen: 127.0.0.1:1053
+  enhanced-mode: fake-ip
+  fake-ip-range: 198.18.0.1/16
+  fake-ip-filter:
+    - '*.lan'
+    - '*.local'
+    - '*.localdomain'
+    - '*.home.arpa'
+    - 'localhost'
+    - 'ntp.*.com'
+    - 'time.*.com'
+    - 'time.*.apple.com'
+    - '*.parsec.app'
+    - '*.parsecgaming.com'
+    #tigr
+    - '+.tx.bilibili.com'
+    #bit
+    - '+.bnsepserv.com'
+    #ikuu
+    - '+.apon'
+    - '+.quest'
+    - '+.art'
+    #花云
+    - '+.apt-agent.com'
+    #ytoo
+    - '+.88223163.xyz'
+    #良心
+    - '+.liangxin1.xyz'
+    #飞猪
+    - '+.fzvip1.com'
+    - '+.fzvip.cc'
+    #eix
+    - '+.eixcloud.com'
+    #boost
+    - '+.myzxdy.top'
+    #西数
+    - '+.micron-qwer.com'
+    #小姨
+    - '+.huaweiyouxuan.com'
+    - '+.knhqf.com'
+    #三毛
+    - '+.aikunapp.com'
+  prefer-h3: false
+  use-hosts: true
+  use-system-hosts: true
+  proxy-server-nameserver:
+    - 223.5.5.5
+    - 119.29.29.29
+  nameserver-policy:
+    "+.cloud-nodes.com":
+      - 124.221.68.73:1053
+    #墙洞
+    "*.oix_nodes.com":
+      - 124.221.68.73:1053
+    #tigr
+    "+.tx.bilibili.com":
+      - https://47.75.114.187/dns-query
+    #ikuuu
+    "+.qpon":
+      - tcp://2dd5f03cce3347f46dbf50d34e175a2e73b2b5ba.9fe06a.fyi:8080
+    "+.quest":
+      - tcp://2dd5f03cce3347f46dbf50d34e175a2e73b2b5ba.9fe06a.fyi:8080
+    "+.art":
+      - tcp://2dd5f03cce3347f46dbf50d34e175a2e73b2b5ba.9fe06a.fyi:8080
+    "geosite:cn,private":
+      - 223.5.5.5
+      - 119.29.29.29
+  nameserver:
+    - 223.5.5.5
+    - 119.29.29.29
+  fallback:
+    - https://1.1.1.1/dns-query#Proxy
+    - https://8.8.8.8/dns-query#Proxy
+  fallback-filter:
+    geoip: true
+    geoip-code: CN
+    geosite:
+      - gfw
+
+# ============================================================
+# proxies: 由 bot 自动填充(节点来自你输入的订阅)
+# ============================================================
+proxies:
+
+proxy-groups:
+  - name: "✈️ 所有节点"
+    type: url-test
+    proxies: [__ALL_NODES__]
+    url: http://connectivitycheck.gstatic.com/generate_204
+    interval: 600
+    tolerance: 50
+    # Patch G (2026-05-25): only exclude status metadata + dead 美国 CIA. Fusion/香港 CIA/IEPL
+    # exclusions rolled back — OIX Cloud profile proves HK/TW/SG Fusion healthy after rotation.
+
+  - name: "🇭🇰 香港节点"
+    type: url-test
+    proxies: [__ALL_NODES__]
+    url: http://cp.cloudflare.com/generate_204
+    interval: 600
+    tolerance: 50
+
+  - name: "🇺🇸 美国节点"
+    type: url-test
+    proxies: [__ALL_NODES__]
+    url: https://speed.cloudflare.com/__down?bytes=200000
+    interval: 300
+    tolerance: 50
+
+  - name: "🇯🇵 日本节点"
+    type: url-test
+    proxies: [__ALL_NODES__]
+    url: https://speed.cloudflare.com/__down?bytes=200000
+    interval: 300
+    tolerance: 50
+
+  - name: "🇨🇳 台湾节点"
+    type: url-test
+    proxies: [__ALL_NODES__]
+    url: http://cp.cloudflare.com/generate_204
+    interval: 600
+    tolerance: 50
+
+  - name: "🇰🇷 韩国节点"
+    type: url-test
+    proxies: [__ALL_NODES__]
+    url: http://cp.cloudflare.com/generate_204
+    interval: 600
+    tolerance: 50
+
+  - name: "🇸🇬 新加坡节点"
+    type: url-test
+    proxies: [__ALL_NODES__]
+    url: https://speed.cloudflare.com/__down?bytes=200000
+    interval: 300
+    tolerance: 50
+
+  - name: "🇮🇪 爱尔兰节点"
+    type: url-test
+    proxies: [__ALL_NODES__]
+    url: http://cp.cloudflare.com/generate_204
+    interval: 600
+    tolerance: 50
+
+  - name: "🇨🇭 瑞士节点"
+    type: url-test
+    proxies: [__ALL_NODES__]
+    url: http://cp.cloudflare.com/generate_204
+    interval: 600
+    tolerance: 50
+
+  - name: "🇬🇧 英国节点"
+    type: url-test
+    proxies: [__ALL_NODES__]
+    url: http://cp.cloudflare.com/generate_204
+    interval: 600
+    tolerance: 50
+
+  - name: "🇨🇦 Canada Auto"
+    type: url-test
+    proxies: [__ALL_NODES__]
+    url: http://www.gstatic.com/generate_204
+    interval: 600
+    tolerance: 50
+
+  - name: "✉️ 邮件专用"
+    type: fallback
+    proxies: [__ALL_NODES__]
+    url: http://www.gstatic.com/generate_204
+    interval: 600
+
+  - name: "Adobe-US"
+    type: fallback
+    proxies:
+      - "🇺🇸 美国节点"
+      - "🇯🇵 日本节点"
+      - "🇸🇬 新加坡节点"
+      - "✈️ 所有节点"
+    url: http://cp.cloudflare.com/generate_204
+    interval: 300
+
+  - name: "Crypto & Lark"
+    type: select
+    proxies:
+      - "✈️ 所有节点"
+      - "🇨🇳 台湾节点"
+      - "🇭🇰 香港节点"
+      - "🇸🇬 新加坡节点"
+      - "🇯🇵 日本节点"
+      - "🇺🇸 美国节点"
+      - "✈️ 所有节点"
+      - DIRECT
+
+  - name: "Lark Call"
+    type: select
+    proxies:
+      - "🇨🇳 台湾节点"
+      - "🇭🇰 香港节点"
+      - DIRECT
+      - "🇸🇬 新加坡节点"
+      - "🇯🇵 日本节点"
+
+  - name: "Proxy"
+    type: select
+    proxies:
+      - "Adobe-US"
+      - "Crypto & Lark"
+      - "✈️ 所有节点"
+      - "✈️ 所有节点"
+      - "🇨🇦 Canada Auto"
+      - "🇭🇰 香港节点"
+      - "🇺🇸 美国节点"
+      - "🇯🇵 日本节点"
+      - "🇰🇷 韩国节点"
+      - "🇨🇳 台湾节点"
+      - "🇸🇬 新加坡节点"
+
+  - name: "Douyin"
+    type: fallback
+    proxies:
+      - "🇨🇭 瑞士节点"
+      - "🇮🇪 爱尔兰节点"
+      - "🇬🇧 英国节点"
+      - "🇭🇰 香港节点"
+      - "🇺🇸 美国节点"
+      - DIRECT
+    url: http://cp.cloudflare.com/generate_204
+    interval: 600
+
+  - name: "Upwork"
+    type: fallback
+    proxies:
+      - "🇭🇰 香港节点"
+      - "🇨🇭 瑞士节点"
+      - "🇮🇪 爱尔兰节点"
+      - "🇬🇧 英国节点"
+      - "🇺🇸 美国节点"
+      - "🇯🇵 日本节点"
+      - "🇸🇬 新加坡节点"
+      - "✈️ 所有节点"
+      - DIRECT
+    url: http://cp.cloudflare.com/generate_204
+    interval: 300
+
+  - name: "Apple"
+    type: fallback
+    proxies:
+      - DIRECT
+      - "Proxy"
+      - "🇭🇰 香港节点"
+      - "🇺🇸 美国节点"
+      - "🇯🇵 日本节点"
+      - "🇰🇷 韩国节点"
+      - "🇸🇬 新加坡节点"
+    url: http://cp.cloudflare.com/generate_204
+    interval: 600
+
+  - name: "Intelligence"
+    type: fallback
+    proxies:
+      - "🇯🇵 日本节点"
+      - "🇸🇬 新加坡节点"
+      - "🇺🇸 美国节点"
+      - "🇨🇳 台湾节点"
+    url: http://cp.cloudflare.com/generate_204
+    interval: 600
+
+  - name: "Telegram"
+    type: fallback
+    proxies:
+      - "Proxy"
+      - "🇭🇰 香港节点"
+      - "🇸🇬 新加坡节点"
+    url: http://cp.cloudflare.com/generate_204
+    interval: 600
+
+  - name: "Netflix"
+    type: fallback
+    proxies:
+      - "Proxy"
+      - "🇸🇬 新加坡节点"
+      - "🇺🇸 美国节点"
+    url: http://cp.cloudflare.com/generate_204
+    interval: 600
+
+  - name: "Disney+"
+    type: fallback
+    proxies:
+      - "Proxy"
+      - "🇸🇬 新加坡节点"
+      - "🇺🇸 美国节点"
+    url: http://cp.cloudflare.com/generate_204
+    interval: 600
+
+  - name: "YouTube"
+    type: fallback
+    proxies:
+      - "Proxy"
+      - "🇭🇰 香港节点"
+      - "🇺🇸 美国节点"
+    url: http://cp.cloudflare.com/generate_204
+    interval: 600
+
+  - name: "Spotify"
+    type: fallback
+    proxies:
+      - "Proxy"
+      - "🇸🇬 新加坡节点"
+      - "🇺🇸 美国节点"
+    url: http://cp.cloudflare.com/generate_204
+    interval: 600
+
+  - name: "TikTok"
+    type: fallback
+    proxies:
+      - "Proxy"
+      - "🇯🇵 日本节点"
+      - "🇸🇬 新加坡节点"
+      - "🇺🇸 美国节点"
+    url: http://cp.cloudflare.com/generate_204
+    interval: 300
+
+  - name: "BiliBili"
+    type: fallback
+    proxies:
+      - DIRECT
+      - "🇭🇰 香港节点"
+      - "🇨🇳 台湾节点"
+    url: http://cp.cloudflare.com/generate_204
+    interval: 600
+
+  - name: "GlobalMedia"
+    type: fallback
+    proxies:
+      - "Proxy"
+      - "🇯🇵 日本节点"
+      - "🇸🇬 新加坡节点"
+      - "🇺🇸 美国节点"
+    url: http://cp.cloudflare.com/generate_204
+    interval: 300
+
+  - name: "Microsoft"
+    type: fallback
+    proxies:
+      - DIRECT
+      - "Proxy"
+      - "🇺🇸 美国节点"
+    url: http://cp.cloudflare.com/generate_204
+    interval: 600
+
+  - name: "Gamer"
+    type: fallback
+    proxies:
+      - DIRECT
+      - "Proxy"
+      - "🇯🇵 日本节点"
+      - "🇭🇰 香港节点"
+    url: http://cp.cloudflare.com/generate_204
+    interval: 600
+
+  - name: "Instagram & Meta"
+    type: url-test
+    proxies: [__ALL_NODES__]
+    url: http://www.gstatic.com/generate_204
+    interval: 600
+    tolerance: 200
+
+  - name: "PH"
+    type: fallback
+    proxies:
+      - "🇯🇵 日本节点"
+      - "🇸🇬 新加坡节点"
+      - "🇭🇰 香港节点"
+      - "🇨🇳 台湾节点"
+      - "✈️ 所有节点"
+    url: https://speed.cloudflare.com/__down?bytes=200000
+    interval: 300
+
+  - name: "ChinaIP"
+    type: select
+    proxies:
+      - "🇨🇭 瑞士节点"
+      - "🇮🇪 爱尔兰节点"
+      - "🇬🇧 英国节点"
+      - "Proxy"
+      - DIRECT
+    url: http://cp.cloudflare.com/generate_204
+    interval: 600
+
+rule-providers:
+  AWAvenue_Ads:
+    type: http
+    behavior: classical
+    format: text
+    url: "https://raw.githubusercontent.com/TG-Twilight/AWAvenue-Ads-Rule/refs/heads/main/Filters/AWAvenue-Ads-Rule-Surge-RULE-SET.list"
+    path: ./rules/awa_avenue_ads.txt
+    interval: 86400
+
+  EAlyce_OpenAI:
+    type: http
+    behavior: classical
+    format: text
+    url: "https://raw.githubusercontent.com/EAlyce/conf/refs/heads/main/Rule/OpenAI.list"
+    path: ./rules/ealyce_openai.txt
+    interval: 86400
+
+  BM_Apple:
+    type: http
+    behavior: classical
+    format: yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Apple/Apple.yaml"
+    path: ./rules/bm_apple.yaml
+    interval: 86400
+
+  BM_GitHub:
+    type: http
+    behavior: classical
+    format: yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/GitHub/GitHub.yaml"
+    path: ./rules/bm_github.yaml
+    interval: 86400
+
+  BM_Microsoft:
+    type: http
+    behavior: classical
+    format: yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Microsoft/Microsoft.yaml"
+    path: ./rules/bm_microsoft.yaml
+    interval: 86400
+
+  BM_Telegram:
+    type: http
+    behavior: classical
+    format: yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Telegram/Telegram.yaml"
+    path: ./rules/bm_telegram.yaml
+    interval: 86400
+
+  BM_Epic:
+    type: http
+    behavior: classical
+    format: yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Epic/Epic.yaml"
+    path: ./rules/bm_epic.yaml
+    interval: 86400
+
+  BM_Sony:
+    type: http
+    behavior: classical
+    format: yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Sony/Sony.yaml"
+    path: ./rules/bm_sony.yaml
+    interval: 86400
+
+  BM_Nintendo:
+    type: http
+    behavior: classical
+    format: yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Nintendo/Nintendo.yaml"
+    path: ./rules/bm_nintendo.yaml
+    interval: 86400
+
+  BM_Douyin:
+    type: http
+    behavior: classical
+    format: yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/DouYin/DouYin.yaml"
+    path: ./rules/bm_douyin.yaml
+    interval: 86400
+
+  BM_Steam:
+    type: http
+    behavior: classical
+    format: yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Steam/Steam.yaml"
+    path: ./rules/bm_steam.yaml
+    interval: 86400
+
+  BM_YouTube:
+    type: http
+    behavior: classical
+    format: yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/YouTube/YouTube.yaml"
+    path: ./rules/bm_youtube.yaml
+    interval: 86400
+
+  BM_Netflix:
+    type: http
+    behavior: classical
+    format: yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Netflix/Netflix.yaml"
+    path: ./rules/bm_netflix.yaml
+    interval: 86400
+
+  BM_Disney:
+    type: http
+    behavior: classical
+    format: yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Disney/Disney.yaml"
+    path: ./rules/bm_disney.yaml
+    interval: 86400
+
+  BM_Spotify:
+    type: http
+    behavior: classical
+    format: yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Spotify/Spotify.yaml"
+    path: ./rules/bm_spotify.yaml
+    interval: 86400
+
+  BM_TikTok:
+    type: http
+    behavior: classical
+    format: yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/TikTok/TikTok.yaml"
+    path: ./rules/bm_tiktok.yaml
+    interval: 86400
+
+  BM_BiliBili:
+    type: http
+    behavior: classical
+    format: yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/BiliBili/BiliBili.yaml"
+    path: ./rules/bm_bilibili.yaml
+    interval: 86400
+
+  BM_ChinaMedia:
+    type: http
+    behavior: classical
+    format: yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/ChinaMedia/ChinaMedia.yaml"
+    path: ./rules/bm_chinamedia.yaml
+    interval: 86400
+
+  BM_GlobalMedia:
+    type: http
+    behavior: classical
+    format: yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/GlobalMedia/GlobalMedia.yaml"
+    path: ./rules/bm_globalmedia.yaml
+    interval: 86400
+
+  BM_ProxyAll:
+    type: http
+    behavior: classical
+    format: yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Proxy/Proxy.yaml"
+    path: ./rules/bm_proxyall.yaml
+    interval: 86400
+
+  BM_ChinaAll:
+    type: http
+    behavior: classical
+    format: yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/China/China.yaml"
+    path: ./rules/bm_chinaall.yaml
+    interval: 86400
+
+  SKK_ChinaIP:
+    type: http
+    behavior: ipcidr
+    format: text
+    url: "https://ruleset.skk.moe/List/ip/china_ip.conf"
+    path: ./rules/skk_china_ip.txt
+    interval: 86400
+
+rules:
+  # --- 0. Subscription endpoint (must be DIRECT to avoid chicken-and-egg) ---
+  - "DOMAIN-SUFFIX,primehelix.co,DIRECT"
+  - "DOMAIN-SUFFIX,oics.net,DIRECT"
+  - "DOMAIN-SUFFIX,huacloud.net,DIRECT"
+  - "DOMAIN-SUFFIX,huacloud.com,DIRECT"
+  - "DOMAIN-SUFFIX,xmancdn.net,DIRECT"
+
+  # --- 0a. Clothes crawler bulk import endpoints (crawler retired ~2026-05; IP rules below inert) ---
+  # qiqiyg.com direct path GFW SNI-blocked (2026-07-16: TCP ok, RST on ClientHello; site healthy via proxy) → Proxy
+  - "DOMAIN-SUFFIX,qiqiyg.com,Proxy"
+  # AS23650 CHINANET-JIANGSU-PROVINCE-IDC; observed from Node clothes importer. Do NOT widen.
+  - "IP-CIDR,43.226.79.134/32,DIRECT,no-resolve"
+  # AS132203 Tencent; observed from Node clothes importer. Do NOT widen.
+  - "IP-CIDR,129.226.3.47/32,DIRECT,no-resolve"
+  - "IP-CIDR,101.32.104.4/32,DIRECT,no-resolve"
+  - "IP-CIDR,101.32.118.25/32,DIRECT,no-resolve"
+  - "IP-CIDR,43.156.222.154/32,DIRECT,no-resolve"
+
+  # --- 0b. WeChat raw MMTLS endpoint: WeChat always DIRECT ---
+  # AS132203 Tencent; observed from WeChat Mac /mmtls. Do NOT widen.
+  - "IP-CIDR,101.32.104.41/32,DIRECT,no-resolve"
+
+  # --- 1. 本地进程与 AdGuard (最高优先级) ---
+  - "PROCESS-NAME,AdGuard,DIRECT"
+  - "PROCESS-NAME,WeChat,DIRECT"
+  - "DOMAIN-SUFFIX,naproxy.com,Proxy"
+  - "DOMAIN-SUFFIX,naproxy.net,Proxy"
+  - "PROCESS-NAME,Mimic,Proxy"
+  - "PROCESS-NAME,Stealthfox,Proxy"
+  - "PROCESS-NAME,Multilogin,Proxy"
+  - "DOMAIN,localhost,DIRECT"
+  - "DOMAIN-SUFFIX,local,DIRECT"
+  - "IP-CIDR,127.0.0.0/8,DIRECT,no-resolve"
+  - "IP-CIDR,192.168.0.0/16,DIRECT,no-resolve"
+  - "IP-CIDR,10.0.0.0/8,DIRECT,no-resolve"
+  - "IP-CIDR,172.16.0.0/12,DIRECT,no-resolve"
+  - "GEOIP,lan,DIRECT,no-resolve"
+
+  # --- 1.1. Parsec 远程桌面 ---
+  - "PROCESS-NAME,parsecd,DIRECT"
+  - "PROCESS-NAME,parsec,DIRECT"
+  - "DOMAIN-SUFFIX,parsec.app,DIRECT"
+  - "DOMAIN-SUFFIX,parsecgaming.com,DIRECT"
+  - "DOMAIN-KEYWORD,parsec,DIRECT"
+
+  # --- LyricsX 修复 ---
+  - "PROCESS-NAME,LyricsX,DIRECT"
+  - "DOMAIN-SUFFIX,kugou.com,DIRECT"
+  - "DOMAIN-SUFFIX,163.com,DIRECT"
+  - "DOMAIN-SUFFIX,gecimi.com,REJECT"
+  - "DOMAIN-SUFFIX,syair.info,REJECT"
+
+  # --- 1.5. Sanity Studio / Sanity CMS ---
+  - "DOMAIN,eo8chjm7.api.sanity.io,🇺🇸 美国节点"
+  - "DOMAIN,apicdn.sanity.io,🇺🇸 美国节点"
+  - "DOMAIN,cdn.sanity.io,🇺🇸 美国节点"
+  - "DOMAIN-SUFFIX,sanity.io,🇺🇸 美国节点"
+  - "DOMAIN-SUFFIX,sanityusercontent.com,🇺🇸 美国节点"
+  - "DOMAIN-SUFFIX,sanity.build,🇺🇸 美国节点"
+  - "DOMAIN-SUFFIX,sanity.studio,🇺🇸 美国节点"
+
+  # --- 2. 广告与隐私追踪拦截 ---
+  - "RULE-SET,AWAvenue_Ads,REJECT"
+
+  # --- 3. 中国抖音 ---
+  - "PROCESS-NAME,AwemeCore,Douyin"
+  - "PROCESS-NAME,Aweme,Douyin"
+  - "PROCESS-NAME,com.ss.iphone.ugc.Aweme,Douyin"
+  - "PROCESS-NAME,抖音,Douyin"
+  - "USER-AGENT,Aweme*,Douyin"
+
+  - "DOMAIN-SUFFIX,douyin.com,Douyin"
+  - "DOMAIN-SUFFIX,douyinpic.com,Douyin"
+  - "DOMAIN-SUFFIX,douyinvod.com,Douyin"
+  - "DOMAIN-SUFFIX,douyincdn.com,Douyin"
+  - "DOMAIN-SUFFIX,douyinstatic.com,Douyin"
+  - "DOMAIN-SUFFIX,iesdouyin.com,Douyin"
+  - "DOMAIN-SUFFIX,douyinliving.com,Douyin"
+  - "DOMAIN-SUFFIX,aweme.com,Douyin"
+  - "DOMAIN-SUFFIX,amemv.com,Douyin"
+  - "DOMAIN-SUFFIX,huoshanimg.com,Douyin"
+  - "DOMAIN-SUFFIX,huoshanstatic.com,Douyin"
+  - "DOMAIN-SUFFIX,huoshan.com,Douyin"
+  - "DOMAIN-SUFFIX,huoshanzhibo.com,Douyin"
+  - "DOMAIN-SUFFIX,bytegecko.com,Douyin"
+  - "DOMAIN-SUFFIX,bytednsdoc.com,Douyin"
+  - "DOMAIN-SUFFIX,bytehwm.com,Douyin"
+  - "DOMAIN-SUFFIX,byteimg.com,Douyin"
+  - "DOMAIN-SUFFIX,bytedance.com,Douyin"
+  - "DOMAIN-SUFFIX,bytedance.net,Douyin"
+  - "DOMAIN-SUFFIX,bytedanceapi.com,Douyin"
+  - "DOMAIN-SUFFIX,byteeffecttos.com,Douyin"
+  - "DOMAIN-SUFFIX,zjcdn.com,Douyin"
+  - "DOMAIN-SUFFIX,zijieapi.com,Douyin"
+  - "DOMAIN-SUFFIX,zijiecdn.com,Douyin"
+  - "DOMAIN-SUFFIX,zijiecdn.net,Douyin"
+  - "DOMAIN-SUFFIX,snssdk.com,Douyin"
+  - "DOMAIN-SUFFIX,ctobsnssdk.com,Douyin"
+  - "DOMAIN-SUFFIX,qishui.com,Douyin"
+  - "DOMAIN-SUFFIX,bdurl.net,Douyin"
+  - "DOMAIN-SUFFIX,bdstatic.com,Douyin"
+  - "DOMAIN-SUFFIX,toutiaoapi.com,Douyin"
+  - "DOMAIN-SUFFIX,toutiaocloud.com,Douyin"
+  - "DOMAIN-SUFFIX,toutiaocdn.com,Douyin"
+  - "DOMAIN-SUFFIX,toutiaoimg.com,Douyin"
+  - "DOMAIN-SUFFIX,toutiaoimg.net,Douyin"
+  - "DOMAIN-SUFFIX,toutiaopage.com,Douyin"
+  - "DOMAIN-SUFFIX,toutiaostatic.com,Douyin"
+  - "DOMAIN-SUFFIX,toutiaovod.com,Douyin"
+  - "DOMAIN-SUFFIX,toutiaohao.com,Douyin"
+  - "DOMAIN-SUFFIX,toutiaohao.net,Douyin"
+  - "DOMAIN-SUFFIX,toutiao.com,Douyin"
+  - "DOMAIN-SUFFIX,ctoutiao.com,Douyin"
+  - "DOMAIN-SUFFIX,pangolin-sdk-toutiao.com,Douyin"
+  - "DOMAIN-SUFFIX,pglstatp-toutiao.com,Douyin"
+  - "DOMAIN-SUFFIX,pstatp.com,Douyin"
+  - "DOMAIN-SUFFIX,ixigua.com,Douyin"
+  - "DOMAIN-SUFFIX,ixiguavideo.com,Douyin"
+  - "DOMAIN-SUFFIX,xigua.com,Douyin"
+  - "DOMAIN-SUFFIX,bdxiguaimg.com,Douyin"
+  - "DOMAIN-SUFFIX,bdxiguastatic.com,Douyin"
+  - "DOMAIN-SUFFIX,ecombdimg.com,Douyin"
+  - "DOMAIN-SUFFIX,ecombdapi.com,Douyin"
+  - "DOMAIN-SUFFIX,ecombdpage.com,Douyin"
+  - "DOMAIN-SUFFIX,ecombdcdn.com,Douyin"
+  - "DOMAIN-SUFFIX,volcanoengine.com,Douyin"
+  - "DOMAIN-SUFFIX,ndcpp.com,Douyin"
+  - "DOMAIN-SUFFIX,doupay.com,Douyin"
+
+  - "DOMAIN-KEYWORD,douyin,Douyin"
+  - "DOMAIN-KEYWORD,aweme,Douyin"
+  - "DOMAIN-KEYWORD,amemv,Douyin"
+  - "DOMAIN-KEYWORD,bytedance,Douyin"
+  - "DOMAIN-KEYWORD,byteimg,Douyin"
+  - "DOMAIN-KEYWORD,byteeffect,Douyin"
+  - "DOMAIN-KEYWORD,snssdk,Douyin"
+  - "DOMAIN-KEYWORD,zijieapi,Douyin"
+  - "DOMAIN-KEYWORD,huoshan,Douyin"
+  - "DOMAIN-KEYWORD,bytegecko,Douyin"
+  - "DOMAIN-KEYWORD,bytednsdoc,Douyin"
+  - "DOMAIN-KEYWORD,bytehwm,Douyin"
+  - "DOMAIN-KEYWORD,ecombd,Douyin"
+  - "DOMAIN-KEYWORD,zjcdn,Douyin"
+  - "DOMAIN-KEYWORD,qishui,Douyin"
+  - "DOMAIN-KEYWORD,douyincdn,Douyin"
+  - "DOMAIN-KEYWORD,toutiaoapi,Douyin"
+  - "DOMAIN-KEYWORD,toutiao,Douyin"
+  - "DOMAIN-KEYWORD,ixigua,Douyin"
+  - "DOMAIN-KEYWORD,xigua,Douyin"
+  - "DOMAIN-KEYWORD,toutiaocloud,Douyin"
+  - "DOMAIN-KEYWORD,byteoversea,Douyin"
+  - "DOMAIN-KEYWORD,volcanoengine,Douyin"
+  - "DOMAIN-KEYWORD,doupay,Douyin"
+
+  - "IP-CIDR,120.39.0.0/16,Douyin,no-resolve"
+  - "IP-CIDR,121.204.0.0/16,Douyin,no-resolve"
+  - "IP-CIDR,8.134.0.0/16,Douyin,no-resolve"
+  # Tencent Cloud HK /24 used by *-hl.zijieapi.com. Do NOT widen to /16 - rest of 163.181.0.0/16 is generic Tencent Cloud (ASN 24429).
+  - "IP-CIDR,163.181.254.0/24,Douyin,no-resolve"
+  # CHINANET-IDC /24 used by ma5-normal-hl.zijieapi.com. Do NOT widen - 101.47.0.0/16 is generic CHINANET (ASN 150436).
+  - "IP-CIDR,101.47.81.0/24,Douyin,no-resolve"
+  # Quantil HK CDN (ASN 54994) edges serving Douyin Live .flv streams. Observed: http://138.113.x/radio/stream-*.flv
+  - "IP-CIDR,138.113.48.0/24,Douyin,no-resolve"
+  - "IP-CIDR,138.113.219.0/24,Douyin,no-resolve"
+  # Zenlayer HK CDN (ASN 21859) edge serving Douyin Live .flv streams.
+  - "IP-CIDR,193.118.39.0/24,Douyin,no-resolve"
+  - "IP-ASN,56046,Douyin,no-resolve"
+  - "IP-ASN,396986,Douyin,no-resolve"
+  - "IP-ASN,24400,Douyin,no-resolve"
+  - "IP-ASN,134425,Douyin,no-resolve"
+  - "IP-ASN,133774,Douyin,no-resolve"
+  - "IP-ASN,133776,Douyin,no-resolve"
+
+  # --- 4. Upwork ---
+  - "DOMAIN-SUFFIX,upwork.com,Upwork"
+  - "DOMAIN-SUFFIX,static-upwork.com,Upwork"
+  - "DOMAIN-KEYWORD,upwork,Upwork"
+
+  # --- 5. 极速白名单与电商防误杀 ---
+  - "DOMAIN-KEYWORD,tencentmap,DIRECT"
+  - "DOMAIN-SUFFIX,map.qq.com,DIRECT"
+  - "DOMAIN-SUFFIX,gtimg.com,DIRECT"
+  - "DOMAIN-SUFFIX,qpic.cn,DIRECT"
+  - "DOMAIN-SUFFIX,qlogo.cn,DIRECT"
+  - "DOMAIN-SUFFIX,servicewechat.com,DIRECT"
+  - "DOMAIN-SUFFIX,wsimg.com,DIRECT"
+  - "DOMAIN-SUFFIX,secureserver.net,DIRECT"
+  - "DOMAIN-KEYWORD,taobao,DIRECT"
+  - "DOMAIN-KEYWORD,tmall,DIRECT"
+  - "DOMAIN-KEYWORD,alicdn,DIRECT"
+  - "DOMAIN-KEYWORD,alibaba,DIRECT"
+  - "DOMAIN-KEYWORD,alipay,DIRECT"
+  - "DOMAIN-KEYWORD,alisoft,DIRECT"
+  - "DOMAIN-KEYWORD,alimama,DIRECT"
+  - "DOMAIN-KEYWORD,wangwang,DIRECT"
+  - "DOMAIN-SUFFIX,alimebot.com,DIRECT"
+  - "DOMAIN-SUFFIX,mmstat.com,DIRECT"
+  - "DOMAIN-SUFFIX,tbcache.com,DIRECT"
+  - "DOMAIN-SUFFIX,aliyuncs.com,DIRECT"
+  - "DOMAIN-SUFFIX,danfss.com,DIRECT"
+  - "DOMAIN-SUFFIX,aliapp.org,DIRECT"
+  - "DOMAIN-SUFFIX,tb.cn,DIRECT"
+
+  # --- 6. 国内日常 ---
+  - "DOMAIN-SUFFIX,meituan.net,DIRECT"
+  - "DOMAIN-SUFFIX,meituan.com,DIRECT"
+  - "DOMAIN-SUFFIX,dianping.com,DIRECT"
+  - "DOMAIN-SUFFIX,xiaojukeji.com,DIRECT"
+  - "DOMAIN-SUFFIX,icloud.com,Apple"
+
+  # --- 7. 自动修正 MLX ---
+  - "DOMAIN,launcher.mlx.yt,DIRECT"
+  - "DOMAIN-SUFFIX,mlx.yt,DIRECT"
+  - "DST-PORT,45003,DIRECT"
+
+  # --- 8. 防 UDP 丢包 ---
+  - "AND,((NETWORK,UDP),(DST-PORT,443)),REJECT"
+
+  # --- 9. 邮件 ---
+  - "DST-PORT,25,✉️ 邮件专用"
+  - "DST-PORT,465,✉️ 邮件专用"
+  - "DST-PORT,587,✉️ 邮件专用"
+  - "DST-PORT,143,✉️ 邮件专用"
+  - "DST-PORT,993,✉️ 邮件专用"
+  - "DST-PORT,110,✉️ 邮件专用"
+  - "DST-PORT,995,✉️ 邮件专用"
+  - "DOMAIN-SUFFIX,pop.gmail.com,✉️ 邮件专用"
+  - "DOMAIN-SUFFIX,imap.gmail.com,✉️ 邮件专用"
+  - "DOMAIN-SUFFIX,smtp.gmail.com,✉️ 邮件专用"
+  - "DOMAIN-SUFFIX,outlook.com,✉️ 邮件专用"
+  - "DOMAIN-SUFFIX,mail.me.com,✉️ 邮件专用"
+
+  # --- 10. 证书吊销检查 ---
+  - "DOMAIN-SUFFIX,digicert.com,Proxy"
+  - "DOMAIN-SUFFIX,mscrl.microsoft.com,Proxy"
+  - "DOMAIN-SUFFIX,pki.goog,Proxy"
+  - "DOMAIN-SUFFIX,gtsca.com,Proxy"
+  - "DOMAIN-SUFFIX,lencr.org,Proxy"
+  - "DOMAIN-SUFFIX,letsencrypt.org,Proxy"
+  - "DOMAIN-SUFFIX,identrust.com,Proxy"
+  - "DOMAIN-SUFFIX,globalsign.com,Proxy"
+  - "DOMAIN-SUFFIX,sectigo.com,Proxy"
+  - "DOMAIN-SUFFIX,comodoca.com,Proxy"
+  - "DOMAIN-SUFFIX,entrust.net,Proxy"
+  - "DOMAIN,o.pki.goog,Proxy"
+  - "DOMAIN,i.pki.goog,Proxy"
+  - "DOMAIN,c.pki.goog,Proxy"
+
+  # --- 11. Instagram & Meta ---
+  - "PROCESS-NAME,Instagram,Instagram & Meta"
+  - "PROCESS-NAME,InstagramWidget,Instagram & Meta"
+  - "PROCESS-NAME,com.instagram.android,Instagram & Meta"
+  - "DOMAIN-SUFFIX,cdninstagram.com,Instagram & Meta"
+  - "DOMAIN-SUFFIX,fbsbx.com,Instagram & Meta"
+  - "DOMAIN-SUFFIX,fbcdn.net,Instagram & Meta"
+  - "DOMAIN-KEYWORD,instagram,Instagram & Meta"
+  - "DOMAIN-KEYWORD,facebook,Instagram & Meta"
+  - "DOMAIN-KEYWORD,fbcdn,Instagram & Meta"
+  - "DOMAIN-SUFFIX,ig.me,Instagram & Meta"
+
+  # --- 12. Adobe ---
+  - "PROCESS-NAME,Adobe Photoshop 2026,Adobe-US"
+  - "PROCESS-NAME,Adobe Content Synchronizer,Adobe-US"
+  - "DOMAIN-SUFFIX,adobe.io,Adobe-US"
+  - "DOMAIN-SUFFIX,adobe.com,Adobe-US"
+  - "DOMAIN-SUFFIX,adobess.com,Adobe-US"
+  - "DOMAIN-SUFFIX,adobelogin.com,Adobe-US"
+  - "DOMAIN-SUFFIX,adobestatic.com,Adobe-US"
+  - "DOMAIN-SUFFIX,adobecc.com,Adobe-US"
+  - "DOMAIN,d1swly8pgrbhu5.cloudfront.net,Adobe-US"
+  - "DOMAIN-SUFFIX,s3-accelerate.amazonaws.com,Adobe-US"
+  - "DOMAIN-KEYWORD,firefly,Adobe-US"
+
+  # --- 13. Lark ---
+  # Lark VC media SDK lives in "Lark Helper (Iron)" in current builds (131.x+); legacy name kept as fallback.
+  # These two lines MUST come before the generic Lark Helper rule, since Clash matches PROCESS-NAME top-down.
+  - "PROCESS-NAME,Lark Helper (Iron),Lark Call"
+  - "PROCESS-NAME,video_conference_sdk,Lark Call"
+  # Lark Call (Volcano RTC) domain rules - must precede generic Lark/Crypto rules so VC media routes via Lark Call.
+  - "DOMAIN-SUFFIX,volcvideo.com,Lark Call"
+  - "DOMAIN-SUFFIX,volcvideos.com,Lark Call"
+  - "DOMAIN-SUFFIX,bytevcloud.com,Lark Call"
+  - "DOMAIN-SUFFIX,byteintla.com,Lark Call"
+  - "DOMAIN-KEYWORD,volcvideo,Lark Call"
+  - "DOMAIN-KEYWORD,bytevcloud,Lark Call"
+  - "DOMAIN-KEYWORD,byteintla,Lark Call"
+  - "DOMAIN-KEYWORD,siprpc,Lark Call"
+  - "DOMAIN-KEYWORD,rtcg-access,Lark Call"
+  # Narrow Akamai /24s observed serving Lark/Feishu IP-only connections (catches IP-only leaks). Do NOT widen.
+  - "IP-CIDR,23.2.16.0/24,Crypto & Lark,no-resolve"
+  - "IP-CIDR,23.32.20.0/24,Crypto & Lark,no-resolve"
+  - "IP-CIDR,23.32.39.0/24,Crypto & Lark,no-resolve"
+  - "IP-CIDR,23.219.172.0/24,Crypto & Lark,no-resolve"
+  - "PROCESS-NAME,Lark,Crypto & Lark"
+  - "PROCESS-NAME,Lark Helper,Crypto & Lark"
+  - "PROCESS-NAME,Feishu,Crypto & Lark"
+  - "PROCESS-NAME,Feishu Helper,Crypto & Lark"
+  - "DOMAIN-SUFFIX,larksuite.com,Crypto & Lark"
+  - "DOMAIN-SUFFIX,larksuitecdn.com,Crypto & Lark"
+  - "DOMAIN-SUFFIX,larkoffice.com,Crypto & Lark"
+  - "DOMAIN-SUFFIX,lark.com,Crypto & Lark"
+  - "DOMAIN-SUFFIX,feishu.cn,Crypto & Lark"
+  - "DOMAIN-SUFFIX,feishu.net,Crypto & Lark"
+  - "DOMAIN-SUFFIX,feishucdn.com,Crypto & Lark"
+  - "DOMAIN-SUFFIX,feishuapp.com,Crypto & Lark"
+  - "DOMAIN-KEYWORD,larksuite,Crypto & Lark"
+  - "DOMAIN-KEYWORD,larkoffice,Crypto & Lark"
+  - "DOMAIN-KEYWORD,feishu,Crypto & Lark"
+
+  # --- 14. AI 模型 ---
+  - "DOMAIN-SUFFIX,chatgpt.com,Intelligence"
+  - "DOMAIN-SUFFIX,openai.com,Intelligence"
+  - "DOMAIN-SUFFIX,oaistatic.com,Intelligence"
+  - "DOMAIN-SUFFIX,oaiusercontent.com,Intelligence"
+  - "DOMAIN-SUFFIX,anthropic.com,Intelligence"
+  - "DOMAIN-SUFFIX,claude.ai,Intelligence"
+  - "DOMAIN-SUFFIX,claude.com,Intelligence"
+  - "DOMAIN-SUFFIX,claudeusercontent.com,Intelligence"
+  # Cursor IDE: its own backend (api2/api5.cursor.sh = models, api3/api4/repo42 = Tab+indexing,
+  # *.cursorapi.com = marketplace, *.cursor-cdn.com = updates) → stable AI pool not auto-HK.
+  - "DOMAIN-SUFFIX,cursor.sh,Intelligence"
+  - "DOMAIN-SUFFIX,cursor.com,Intelligence"
+  - "DOMAIN-SUFFIX,cursorapi.com,Intelligence"
+  - "DOMAIN-SUFFIX,cursor-cdn.com,Intelligence"
+  - "DOMAIN-SUFFIX,aiplatform.googleapis.com,Intelligence"
+  - "DOMAIN-KEYWORD,gemini,Intelligence"
+  - "DOMAIN-SUFFIX,generativelanguage.googleapis.com,Intelligence"
+  - "DOMAIN-SUFFIX,alkali.google.com,Intelligence"
+  - "DOMAIN-SUFFIX,ai.google.dev,Intelligence"
+  - "DOMAIN-SUFFIX,makersuite.google.com,Intelligence"
+
+  # --- 15. 跨境电商与指纹浏览器 ---
+  - "DOMAIN-KEYWORD,multilogin,Proxy"
+  - "DOMAIN-SUFFIX,apple.news,🇺🇸 美国节点"
+  - "DOMAIN,news-edge.apple.com,🇺🇸 美国节点"
+  - "DOMAIN-SUFFIX,ls.apple.com,🇺🇸 美国节点"
+
+  # --- 16. 加密货币与交易所 ---
+  - "DOMAIN-SUFFIX,bitmart.com,Crypto & Lark"
+  - "DOMAIN-SUFFIX,xt.com,Crypto & Lark"
+  - "DOMAIN-KEYWORD,bitget,Crypto & Lark"
+  - "DOMAIN-KEYWORD,okx,Crypto & Lark"
+  - "DOMAIN-KEYWORD,binance,Crypto & Lark"
+  - "DOMAIN-KEYWORD,bingx,Crypto & Lark"
+  - "DOMAIN-SUFFIX,gate.io,Crypto & Lark"
+  - "DOMAIN-SUFFIX,gate.com,Crypto & Lark"
+  - "DOMAIN-SUFFIX,toobit.com,Crypto & Lark"
+  - "DOMAIN-SUFFIX,fiat24.com,Crypto & Lark"
+
+  # --- 17. Steam ---
+  - "DOMAIN-KEYWORD,steampowered,Proxy"
+  - "DOMAIN-SUFFIX,steamcommunity.com,Proxy"
+  - "DOMAIN-SUFFIX,steamgames.com,Proxy"
+  - "DOMAIN-SUFFIX,steam-chat.com,Proxy"
+  - "DOMAIN-SUFFIX,steamstat.us,Proxy"
+  - "DOMAIN-SUFFIX,steamcontent.com,Proxy"
+  - "DOMAIN-SUFFIX,steamstatic.com,Proxy"
+  - "DOMAIN,api.steampowered.com,Proxy"
+  - "DOMAIN,login.steampowered.com,Proxy"
+
+  # --- 18. 特殊区域 ---
+  - "DOMAIN-SUFFIX,ir,🇨🇦 Canada Auto"
+  - "DOMAIN-KEYWORD,asretarakonesh,🇨🇦 Canada Auto"
+
+  # --- 19. Bilibili ---
+  - "DOMAIN,data.bilibili.com,REJECT"
+  - "DOMAIN-SUFFIX,dataflow.biliapi.com,REJECT"
+  - "DOMAIN,cm.bilibili.com,REJECT"
+  - "DOMAIN,mall.bilibili.com,REJECT"
+  - "DOMAIN-SUFFIX,mall.bilibili.cn,REJECT"
+  - "DOMAIN-SUFFIX,smallfighter.com,REJECT"
+  - "DOMAIN-SUFFIX,mmmarket.com,REJECT"
+  - "DOMAIN-SUFFIX,9917.com,REJECT"
+  - "DOMAIN-SUFFIX,biligame.com,REJECT"
+  - "DOMAIN-SUFFIX,solseed.cn,REJECT"
+
+  # --- 20. PH (Pornhub + MissAV) ---
+  - "DOMAIN-SUFFIX,pornhub.com,PH"
+  - "DOMAIN-SUFFIX,pornhub.org,PH"
+  - "DOMAIN-SUFFIX,pornhubpremium.com,PH"
+  - "DOMAIN-SUFFIX,phncdn.com,PH"
+  - "DOMAIN-SUFFIX,phprcdn.com,PH"
+  - "DOMAIN-KEYWORD,pornhub,PH"
+  - "DOMAIN-SUFFIX,missav.com,PH"
+  - "DOMAIN-SUFFIX,missav.ws,PH"
+  - "DOMAIN-SUFFIX,missav.ai,PH"
+  - "DOMAIN-KEYWORD,missav,PH"
+
+  # --- 21. 远程 Rule-Set 兜底 ---
+  - "RULE-SET,EAlyce_OpenAI,Intelligence"
+  - "RULE-SET,BM_Apple,Apple"
+  - "RULE-SET,BM_GitHub,Intelligence"
+  - "RULE-SET,BM_Microsoft,Microsoft"
+  - "RULE-SET,BM_Telegram,Telegram"
+  - "RULE-SET,BM_Epic,Gamer"
+  - "RULE-SET,BM_Sony,Gamer"
+  - "RULE-SET,BM_Nintendo,Gamer"
+  - "RULE-SET,BM_Douyin,Douyin"
+  - "RULE-SET,BM_Steam,Gamer"
+  - "RULE-SET,BM_YouTube,YouTube"
+  - "RULE-SET,BM_Netflix,Netflix"
+  - "RULE-SET,BM_Disney,Disney+"
+  - "RULE-SET,BM_Spotify,Spotify"
+  - "RULE-SET,BM_TikTok,TikTok"
+  - "RULE-SET,BM_BiliBili,BiliBili"
+  - "RULE-SET,BM_ChinaMedia,DIRECT"
+  - "RULE-SET,BM_GlobalMedia,GlobalMedia"
+  - "RULE-SET,BM_ProxyAll,Proxy"
+  - "RULE-SET,BM_ChinaAll,ChinaIP"
+  - "RULE-SET,SKK_ChinaIP,ChinaIP"
+
+  # --- 22. 最终兜底 ---
+  - "MATCH,Proxy"
